@@ -1,9 +1,9 @@
 // function move basiert auf code von Frank Poth
 // https://github.com/frankarendpoth/frankarendpoth.github.io/blob/master/content/pop-vlog/javascript/2017/009-control/control.js
 var direction = 1;
-var canvas = start;
+var state = start;
 var selectetLevel = 1;
-var gameCanvas = 1;
+var gamestate = 1;
 var won;
 var dogPeeing = false;
 var fall = false;
@@ -14,8 +14,8 @@ var Up = [];
 var dog = {
   x: 5,
   y: 480,
-  sx: 20,
-  sy: 20,
+  sx: 30,
+  sy: 50,
   live: 100,
   points: 0,
   x_velocity: 0,
@@ -65,7 +65,7 @@ var haus = {
   sy: 30
 };
 
-//canvas
+//state
 function start() {
   fill(100, 100, 100);
   rect(200, 200, 100, 50);
@@ -113,7 +113,7 @@ function player() {
   } else {
     fill("yellow");
   }
-  rect(dog.x, dog.y, 20, 20);
+  image(dog_sprite, dog.x, dog.y, 50, 30, 0, 0, 800, 800);
 }
 //cat
 function enemy1() {
@@ -193,9 +193,9 @@ function move() {
   } else {
     fall = false;
   }
-  if (dog.y > 480 && fall === false) {
+  if (dog.y > 470 && fall === false) {
     dog.jumping = false;
-    dog.y = 480;
+    dog.y = 470;
     dog.y_velocity = 0;
   } else if (
     dog.y + dog.sy >= shrub.y &&
@@ -203,21 +203,21 @@ function move() {
     dog.x <= shrub.x + shrub.sx - 2
   ) {
     dog.jumping = false;
-    dog.y = 440;
+    dog.y = 430;
     dog.y_velocity = 0;
   }
   if (dog.y > 600) {
-    canvas = gameOver;
+    state = gameOver;
   }
-  //if dog is leaving canvas
+  //if dog is leaving state
   if (dog.x > 630) {
     dog.x = 5;
-    gameCanvas += 1;
-  } else if (dog.x < 5 && gameCanvas >= 2) {
+    gamestate += 1;
+  } else if (dog.x < 5 && gamestate >= 2) {
     dog.x = 630;
-    gameCanvas -= 1;
+    gamestate -= 1;
   }
-  if (dog.x <= 5 && gameCanvas === 1) {
+  if (dog.x <= 5 && gamestate === 1) {
     dog.x = 5;
   }
 
@@ -239,15 +239,15 @@ function move() {
   }
 }
 function hit() {
-  if (colision(cat, dog) === true && (gameCanvas === 1 || gameCanvas === 3)) {
+  if (colision(cat, dog) === true && (gamestate === 1 || gamestate === 3)) {
     dog.live -= 1;
   }
   if (colision(box, dog) === true && lUp === false) {
     dog.live += 1;
     lUp = true;
   }
-  if (colision(dog, human) === true && gameCanvas === 2) {
-    canvas = gameOver;
+  if (colision(dog, human) === true && gamestate === 2) {
+    state = gameOver;
   }
   if (colision(dog, tree) === true && dogPeeing === true && pUp === false) {
     dog.points += 1;
@@ -296,28 +296,28 @@ function colision(obj1, obj2) {
 function mousePressed() {
   //Start Game
   if (
-    canvas === start &&
+    state === start &&
     mouseX > 200 &&
     mouseX < 300 &&
     mouseY > 200 &&
     mouseY < 250
   ) {
-    canvas = selectetLevel;
+    state = selectetLevel;
     dog.x = 5;
   }
   //Level selection menu
   if (
-    canvas === start &&
+    state === start &&
     mouseX > 400 &&
     mouseX < 500 &&
     mouseY > 200 &&
     mouseY < 250
   ) {
-    canvas = level;
+    state = level;
   }
   //select Level 1
   if (
-    canvas === level &&
+    state === level &&
     mouseX > 300 &&
     mouseX < 400 &&
     mouseY > 140 &&
@@ -328,7 +328,7 @@ function mousePressed() {
   }
   //select Level 2
   if (
-    canvas === level &&
+    state === level &&
     mouseX > 300 &&
     mouseX < 400 &&
     mouseY > 200 &&
@@ -339,7 +339,7 @@ function mousePressed() {
   }
   //select Level 3
   if (
-    canvas === level &&
+    state === level &&
     mouseX > 300 &&
     mouseX < 400 &&
     mouseY > 260 &&
@@ -350,37 +350,37 @@ function mousePressed() {
   }
   //back to start
   if (
-    canvas === level &&
+    state === level &&
     mouseX > 500 &&
     mouseX < 550 &&
     mouseY > 100 &&
     mouseY < 125
   ) {
-    canvas = start;
+    state = start;
     console.log("back");
   }
   //game over
   //back to start
   if (
-    canvas === gameOver &&
+    state === gameOver &&
     mouseX > 240 &&
     mouseX < 340 &&
     mouseY > 260 &&
     mouseY < 310
   ) {
-    canvas = start;
+    state = start;
     dog.live = 100;
     console.log("back to Menu");
   }
   //restart level
   if (
-    canvas === gameOver &&
+    state === gameOver &&
     mouseX > 360 &&
     mouseX < 460 &&
     mouseY > 260 &&
     mouseY < 310
   ) {
-    canvas = selectetLevel;
+    state = selectetLevel;
     dog.live = 100;
     dog.x = 5;
     console.log("restart level");
@@ -389,24 +389,24 @@ function mousePressed() {
 function draw() {
   clear();
   //Start
-  if (canvas === start) {
+  if (state === start) {
     start();
   }
   //Level selection
-  if (canvas === level) {
+  if (state === level) {
     level();
   }
 
   if (dog.live <= 0) {
-    canvas = gameOver;
+    state = gameOver;
   }
 
-  if (dog.x >= haus.x && gameCanvas === 3) {
-    canvas = won;
+  if (dog.x >= haus.x && gamestate === 3) {
+    state = won;
   }
 
   //Level 1
-  if (canvas === 1 && gameCanvas === 1) {
+  if (state === 1 && gamestate === 1) {
     ground();
     holes();
     trees();
@@ -420,7 +420,7 @@ function draw() {
     hit();
     move();
   }
-  if (canvas === 1 && gameCanvas === 2) {
+  if (state === 1 && gamestate === 2) {
     trees();
     player();
     enemy2();
@@ -431,7 +431,7 @@ function draw() {
     hit();
     move();
   }
-  if (canvas === 1 && gameCanvas === 3) {
+  if (state === 1 && gamestate === 3) {
     dogHaus();
     trees();
     player();
@@ -442,14 +442,16 @@ function draw() {
     hit();
     move();
   }
-  if (canvas === gameOver) {
+  if (state === gameOver) {
     gameOver();
   }
-  if (canvas === won) {
+  if (state === won) {
     gameWon();
   }
 
-  // //all canvas
+  image(dog_sprite, 0, 0, 50, 30, 0, 0, 800, 800);
+
+  // //all state
   // // start();
   // // level();
 
