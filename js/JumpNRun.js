@@ -3,28 +3,86 @@
 
 //Player
 var dog = {
-  x: 5,
-  y: 480,
-  sx: 25,
-  sy: 25,
+  x: 0,
+  y: 465,
+  sx: 37,
+  sy: 35,
+  picX: 0,
+  picY: 0,
+  t: 0,
   live: 100,
   points: 0,
   x_velocity: 0,
   y_velocity: 0,
   jumping: false,
   fall: false,
-  peeing: false
+  peeing: false,
+  walking: false,
+  direction: 1
 };
+let dogStanding = [];
 
-function player() {
+function drawPlayer() {
+  //rect(dog.x, dog.y, dog.sx, dog.sy);
   if (dog.peeing === true) {
-    fill(100, 100, 100);
+    dog.picX = 800;
+    dog.picY = 1600;
+    if (dog.t > 10) {
+      dog.picX = 0;
+      dog.picY = 1600;
+      if (dog.t > 20) dog.t = 0;
+    }
+  } else if (dog.jumping === true) {
+    dog.picX = 0;
+    dog.picY = 800;
+  } else if (dog.y_velocity > 0 && dog.jumping === false) {
+    dog.picX = 800;
+    dog.picY = 800;
+  } else if (dog.walking === true) {
+    dog.picX = 800;
+    dog.picY = 0;
+    if (dog.t > 5) {
+      dog.picX = 1610;
+      dog.picY = 0;
+      if (dog.t > 10) dog.t = 0;
+    }
   } else {
-    fill("yellow");
+    dog.t++;
+    dog.picX = 0;
+    dog.picY = 0;
+    if (dog.t > 10) {
+      dog.picX = 805;
+      dog.picY = 0;
+      if (dog.t > 20) dog.t = 0;
+    }
   }
-  rect(dog.x, dog.y, dog.sx, dog.sy);
-  //   image(dog_sprite, dog.x, dog.y, 50, 30, 0, 0, 800, 800);
+  if (dog.direction === 0) {
+    image(
+      dog_spriteL,
+      dog.x - 9,
+      dog.y - 8,
+      50,
+      45,
+      dog.picX,
+      dog.picY,
+      800,
+      800
+    );
+  } else {
+    image(
+      dog_spriteR,
+      dog.x - 13,
+      dog.y - 8,
+      50,
+      45,
+      dog.picX,
+      dog.picY,
+      800,
+      800
+    );
+  }
 }
+
 function movePlayer() {
   if (keyIsDown(UP_ARROW) && dog.jumping === false) {
     dog.y_velocity -= 25;
@@ -33,13 +91,22 @@ function movePlayer() {
 
   if (keyIsDown(LEFT_ARROW)) {
     dog.x_velocity -= 0.5;
-  }
-
-  if (keyIsDown(RIGHT_ARROW)) {
+    dog.walking = true;
+    dog.direction = 0;
+    dog.t++;
+  } else if (keyIsDown(RIGHT_ARROW)) {
     dog.x_velocity += 0.5;
+    dog.walking = true;
+    dog.direction = 1;
+    dog.t++;
+  } else {
+    dog.walking = false;
   }
   if (keyIsDown(DOWN_ARROW)) {
-    dogPeeing = true;
+    dog.peeing = true;
+    dog.t++;
+  } else {
+    dog.peeing = false;
   }
 
   dog.y_velocity += 1.5; // gravity
@@ -54,9 +121,9 @@ function movePlayer() {
   // } else {
   //   fall = false;
   // }
-  if (dog.y > 475 && dog.fall === false) {
+  if (dog.y > 465 && dog.fall === false) {
     dog.jumping = false;
-    dog.y = 475;
+    dog.y = 465;
     dog.y_velocity = 0;
   }
   // else if (
@@ -93,19 +160,55 @@ function spawnCat(cx, cy, sp) {
     startX: cx,
     x: 0,
     y: cy,
+    picX: 0,
+    picY: 0,
     speed: sp,
     direction: 1,
-    sx: 15,
-    sy: 15,
-    dx: 200
+    sx: 30,
+    sy: 28,
+    dx: 200,
+    t: 0,
+    walking: false,
+    attacking: false
   };
   return cat;
 }
 function drawCat(cat) {
-  push();
-  fill("red");
-  rect(cat.startX + cat.x, cat.y, cat.sx, cat.sy);
-  pop();
+  //rect(cat.x, cat.y, cat.sx, cat.sy);
+  if (cat.walking === true) {
+    cat.picX = 0;
+    cat.picY = 0;
+    if (cat.t > 7) {
+      cat.picX = 1610;
+      cat.picY = 0;
+      if (cat.t > 14) cat.t = 0;
+    }
+  }
+  if (cat.direction === 1) {
+    image(
+      cat_spriteR,
+      cat.x - 18,
+      cat.y - 16,
+      50,
+      45,
+      cat.picX,
+      cat.picY,
+      800,
+      800
+    );
+  } else {
+    image(
+      cat_spriteL,
+      cat.x - 18,
+      cat.y - 16,
+      50,
+      45,
+      cat.picX,
+      cat.picY,
+      800,
+      800
+    );
+  }
 }
 function moveCat(cat) {
   if (
@@ -114,8 +217,12 @@ function moveCat(cat) {
   ) {
     let sp = cat.speed * cat.direction;
     cat.x = cat.x + sp;
+    cat.walking = true;
+    cat.t++;
   } else {
     cat.direction = cat.direction * -1;
+    cat.walking = true;
+    cat.t++;
   }
 }
 
@@ -123,21 +230,62 @@ function moveCat(cat) {
 function spawnHuman(cx, cy, sp) {
   var human = {
     startX: cx,
-    x: 0,
+    x: 100,
     y: cy,
+    picX: 0,
+    picY: 0,
     speed: sp,
     direction: 1,
-    sx: 15,
-    sy: 40,
-    dx: 200
+    sx: 30,
+    sy: 67,
+    dx: 200,
+    t: 0,
+    walking: false
   };
   return human;
 }
 function drawHuman(human) {
-  push();
-  fill("pink");
-  rect(human.startX + human.x, human.y, human.sx, human.sy);
-  pop();
+  // rect(human.x, human.y, human.sx, human.sy);
+  if (human.walking === true) {
+    human.picX = 865;
+    human.picY = 0;
+    if (human.t > 5 && human.t < 6) {
+      human.picX = 450;
+      human.picY = 0;
+    } else if (human.t >= 6 && human.t < 11) {
+      human.picX = 1350;
+      human.picY = 0;
+    } else if (human.t >= 11) {
+      human.picX = 450;
+      human.picY = 0;
+      if (human.t > 12) human.t = 0;
+    }
+  }
+  if (human.direction === 1) {
+    image(
+      human_spriteR,
+      human.x,
+      human.y,
+      35,
+      80,
+      human.picX,
+      human.picY,
+      430,
+      1300
+    );
+  } else {
+    image(
+      human_spriteL,
+      human.x,
+      human.y,
+      35,
+      80,
+      human.picX,
+      human.picY,
+      430,
+      1300
+    );
+  }
 }
 function moveHuman(human) {
   if (
@@ -146,8 +294,12 @@ function moveHuman(human) {
   ) {
     let sp = human.speed * human.direction;
     human.x = human.x + sp;
+    human.walking = true;
+    human.t++;
   } else {
     human.direction = human.direction * -1;
+    human.walking = true;
+    human.t++;
   }
 }
 
@@ -156,17 +308,28 @@ function spawnTree(cx, cy) {
   var tree = {
     x: cx,
     y: cy,
-    sx: 20,
-    sy: 40,
-    dx: 200
+    sx: 60,
+    sy: 125
   };
   return tree;
 }
-function drawTree(x, y) {
-  push();
-  fill("brown");
-  rect(x, y, tree.sx, 40);
-  pop();
+function drawTree(tree) {
+  //rect(tree.x, tree.y, tree.sx, tree.sy);
+  image(treePNG, tree.x - 15, tree.y - 8, 220, 300, 20, 90, 800, 800);
+}
+
+//Scrubbery
+function spawnShrub(cx, cy) {
+  var shrub = {
+    x: cx,
+    y: cy,
+    sx: 50,
+    sy: 40
+  };
+  return shrub;
+}
+function drawShrub(shrub) {
+  rect(shrub.x, shrub.y, shrub.sx, shrub.sy);
 }
 
 //colision
@@ -271,32 +434,45 @@ function gameOver() {
 function createPage(id) {
   page = {
     cats: [],
-    humans: []
+    humans: [],
+    trees: [],
+    shrubbery: []
   };
   switch (id) {
     case 0:
-      page.cats.push(spawnCat(200, 485, 1));
-      page.cats.push(spawnCat(200, 485, 2));
-      page.humans.push(spawnHuman(200, 460, 3));
+      page.shrubbery.push(spawnShrub(400, 400));
       break;
     case 1:
-      page.cats.push(spawnCat(200, 490, 1));
+      page.cats.push(spawnCat(200, 472, 1));
+      page.cats.push(spawnCat(200, 472, 2));
+      page.humans.push(spawnHuman(400, 433, 1));
+      page.trees.push(spawnTree(450, 375));
+
+      break;
+    case 2:
+      page.cats.push(spawnCat(200, 472, 1));
+      break;
+    case 3:
       break;
   }
   level.page.push(page);
 }
 function drawPage() {
   //ground
-  push();
-  fill(200, 200, 200);
-  rect(0, 500, 650, 10);
-  pop();
+  //rect(0, 650, 650, 5);
+  image(groundPNG, 0, 500, 650, 650, 0, 0, 800, 800);
 
   for (let i in page.cats) {
     drawCat(page.cats[i]);
   }
-  for (let j in page.humans) {
-    drawHuman(page.humans[j]);
+  for (let i in page.humans) {
+    drawHuman(page.humans[i]);
+  }
+  for (let i in page.trees) {
+    drawTree(page.trees[i]);
+  }
+  for (let i in page.shrubbery) {
+    drawShrub(page.shrubbery[i]);
   }
 }
 function updatePage() {
@@ -312,12 +488,15 @@ function switchPage(n) {
 }
 createPage(0);
 createPage(1);
+createPage(2);
+createPage(3);
 
 page = level.page[pageNow];
 function draw() {
   clear();
+
   drawPage();
   updatePage();
   movePlayer();
-  player();
+  drawPlayer();
 }

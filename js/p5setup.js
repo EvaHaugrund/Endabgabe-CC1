@@ -1,5 +1,12 @@
 function preload() {
-  dog_sprite = loadImage("png/dog-spritesheet.png");
+  dog_spriteR = loadImage("png/dog-spritesheet.png");
+  dog_spriteL = loadImage("png/dog-spritesheet2.png");
+  cat_spriteR = loadImage("png/cat-spritesheetR.png");
+  cat_spriteL = loadImage("png/cat-spritesheetL.png");
+  human_spriteR = loadImage("png/human-spritesheetR.png");
+  human_spriteL = loadImage("png/human-spritesheetL.png");
+  groundPNG = loadImage("png/ground.png");
+  treePNG = loadImage("png/tree.png");
 
   soundFormats("mp3", "ogg");
   //http://soundbible.com/tags-fireball.html
