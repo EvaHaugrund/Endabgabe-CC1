@@ -11,6 +11,10 @@ let shrubPNG;
 let liveBoxPNG;
 let doghousePNG;
 let holePNG;
+let rightArrow;
+let leftArrow;
+let upArrow;
+let downArrow;
 
 function preload() {
   dog_spriteR = loadImage("png/dog-spritesheet.png");
@@ -26,6 +30,10 @@ function preload() {
   liveBoxPNG = loadImage("png/liveBox.png");
   doghousePNG = loadImage("png/doghouse.png");
   holePNG = loadImage("png/hole.png");
+  rightArrow = loadImage("png/Right-Arrow.png");
+  leftArrow = loadImage("png/Left-Arrow.png");
+  upArrow = loadImage("png/Up-Arrow.png");
+  downArrow = loadImage("png/Down-Arrow.png");
 
   soundFormats("mp3", "ogg");
   //http://soundbible.com/tags-fireball.html
