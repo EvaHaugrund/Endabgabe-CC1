@@ -38,11 +38,6 @@ function preload() {
   leftArrow = loadImage("png/Left-Arrow.png");
   upArrow = loadImage("png/Up-Arrow.png");
   downArrow = loadImage("png/Down-Arrow.png");
-
-  soundFormats("mp3", "ogg");
-  //http://soundbible.com/tags-fireball.html
-  // soundFireball = loadSound('Musik/Flame Arrow-SoundBible.com-618067908.mp3');
-  // soundTrippelFireball = loadSound("Musik/Catapult-SoundBible.com-829548288.mp3");
 }
 
 function setup() {
