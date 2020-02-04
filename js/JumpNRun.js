@@ -1,17 +1,34 @@
+function setup() {
+  var canvas = createCanvas(650, 600);
+  canvas.parent("jumpnrun");
+}
+window.addEventListener(
+  "keydown",
+  function(e) {
+    // space and arrow keys
+    if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+      e.preventDefault();
+    }
+  },
+  false
+);
 //colision
 function hit() {
   for (var i in page.cats) {
     if (colision(dog, page.cats[i]) === true) {
-      dog.live -= 1;
+      dog.life -= 1;
+      page.cats[i].attacking = true;
+    } else {
+      page.cats[i].attacking = false;
     }
   }
-  for (var b in page.liveBox) {
+  for (var b in page.lifeBox) {
     if (
-      colision(page.liveBox[b], dog) === true &&
-      page.liveBox[b].hit === false
+      colision(page.lifeBox[b], dog) === true &&
+      page.lifeBox[b].hit === false
     ) {
-      dog.live += 10;
-      page.liveBox[b].hit = true;
+      dog.life += 10;
+      page.lifeBox[b].hit = true;
     }
   }
 
@@ -72,7 +89,7 @@ function createPage(id) {
     trees: [],
     shrubbery: [],
     holes: [],
-    liveBox: [],
+    lifeBox: [],
     doghouse: [],
     explanation1: [],
     explanation2: [],
@@ -80,7 +97,7 @@ function createPage(id) {
   };
   switch (id) {
     case 0:
-      page.liveBox.push(spawnLiveBox(100, 350));
+      page.lifeBox.push(spawnLifeBox(100, 350));
       page.trees.push(spawnTree(230, 375));
       page.shrubbery.push(spawnShrub(387, 450));
       page.holes.push(spawnHole(440, 500));
@@ -88,14 +105,15 @@ function createPage(id) {
       break;
     case 1:
       page.shrubbery.push(spawnShrub(80, 450));
-      page.cats.push(spawnCat(200, 472, 2));
+      page.cats.push(spawnCat(180, 472, 1));
       page.shrubbery.push(spawnShrub(230, 450));
       page.shrubbery.push(spawnShrub(380, 450));
-      page.humans.push(spawnHuman(500, 433, 1));
+      page.humans.push(spawnHuman(500, 438, 0.5));
       page.shrubbery.push(spawnShrub(530, 450));
       page.explanation2.push(spawnExplained2(60, 300));
       break;
     case 2:
+      page.trees.push(spawnTree(150, 375));
       page.doghouse.push(spawnDoghouse(550, 428));
       page.explanation3.push(spawnExplained3(200, 300));
       break;
@@ -103,25 +121,30 @@ function createPage(id) {
     case 3:
       page.holes.push(spawnHole(100, 500));
       page.trees.push(spawnTree(250, 375));
-      page.cats.push(spawnCat(200, 472, 2));
+      page.cats.push(spawnCat(200, 472, 1.5));
       page.holes.push(spawnHole(380, 500));
       page.shrubbery.push(spawnShrub(450, 450));
       break;
     case 4:
-      page.liveBox.push(spawnLiveBox(100, 350));
+      page.lifeBox.push(spawnLifeBox(100, 350));
       page.shrubbery.push(spawnShrub(250, 450));
-      page.humans.push(spawnHuman(500, 433, 1));
+      page.humans.push(spawnHuman(500, 438, 1));
       break;
     case 5:
+      page.cats.push(spawnCat(300, 472, 2));
       page.trees.push(spawnTree(250, 375));
+      page.lifeBox.push(spawnLifeBox(350, 350));
       break;
     case 6:
       page.holes.push(spawnHole(100, 500));
       page.holes.push(spawnHole(200, 500));
+      page.cats.push(spawnCat(300, 472, 1));
+      page.cats.push(spawnCat(320, 472, 2));
       break;
     case 7:
-      page.liveBox.push(spawnLiveBox(100, 350));
+      page.lifeBox.push(spawnLifeBox(100, 350));
       page.trees.push(spawnTree(250, 375));
+      page.humans.push(spawnHuman(500, 438, 1));
       break;
     case 8:
       page.cats.push(spawnCat(200, 472, 2));
@@ -131,18 +154,34 @@ function createPage(id) {
     case 9:
       page.cats.push(spawnCat(200, 472, 2));
       page.shrubbery.push(spawnShrub(300, 450));
+      page.lifeBox.push(spawnLifeBox(400, 350));
       break;
     case 10:
+      page.lifeBox.push(spawnLifeBox(100, 350));
+      page.holes.push(spawnHole(100, 500));
+      page.holes.push(spawnHole(130, 500));
+      page.cats.push(spawnCat(300, 472, 1));
+      page.holes.push(spawnHole(460, 500));
       break;
     case 11:
+      page.humans.push(spawnHuman(500, 438, 1));
+      page.trees.push(spawnTree(280, 375));
+      page.shrubbery.push(spawnShrub(400, 450));
       break;
     case 12:
+      page.humans.push(spawnHuman(500, 438, 1));
+      page.cats.push(spawnCat(500, 472, 2));
+      page.shrubbery.push(spawnShrub(550, 450));
       break;
     case 13:
-      page.humans.push(spawnHuman(500, 433, 1));
+      page.holes.push(spawnHole(150, 500));
+      page.humans.push(spawnHuman(500, 438, 1));
+      page.trees.push(spawnTree(480, 375));
       break;
     case 14:
+      page.trees.push(spawnTree(200, 375));
       page.cats.push(spawnCat(200, 472, 2));
+      page.shrubbery.push(spawnShrub(400, 450));
       page.doghouse.push(spawnDoghouse(550, 428));
       break;
   }
@@ -172,8 +211,8 @@ function drawPage() {
     for (let i in page.holes) {
       drawHole(page.holes[i]);
     }
-    for (let i in page.liveBox) {
-      drawLiveBox(page.liveBox[i]);
+    for (let i in page.lifeBox) {
+      drawLifeBox(page.lifeBox[i]);
     }
     for (let i in page.doghouse) {
       drawDoghouse(page.doghouse[i]);
@@ -194,23 +233,26 @@ function drawPage() {
       drawCat(page.cats[i]);
     }
 
-    hit();
-    movePlayer();
     drawPlayer();
-    drawLive();
+    drawLife();
     drawPoints();
   }
   drawLevelNr();
+  //wenn der Hund aus dem Canvas raus läuft, damit er nicht mehr sichtbar ist
   noStroke();
-  fill(255, 255, 255);
+  fill(0, 0, 0);
   rect(650, 0, 50, 700);
 }
 function updatePage() {
-  for (let i = 0; i < page.cats.length; i++) {
-    moveCat(page.cats[i]);
-  }
-  for (let i = 0; i < page.humans.length; i++) {
-    moveHuman(page.humans[i]);
+  if (state === 4) {
+    hit();
+    movePlayer();
+    for (let i = 0; i < page.cats.length; i++) {
+      moveCat(page.cats[i]);
+    }
+    for (let i = 0; i < page.humans.length; i++) {
+      moveHuman(page.humans[i]);
+    }
   }
 }
 function switchPage(n) {

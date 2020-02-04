@@ -8,8 +8,8 @@ function spawnHuman(cx, cy, sp) {
     picY: 0,
     speed: sp,
     direction: 1,
-    sx: 30,
-    sy: 67,
+    sx: 23,
+    sy: 62,
     dx: 600,
     t: 0,
     walking: false
@@ -17,27 +17,27 @@ function spawnHuman(cx, cy, sp) {
   return human;
 }
 function drawHuman(human) {
-  // rect(human.x, human.y, human.sx, human.sy);
+  //rect(human.x, human.y, human.sx, human.sy);
   if (human.walking === true) {
     human.picX = 865;
     human.picY = 0;
-    if (human.t > 5 && human.t < 6) {
+    if (human.t > 10 && human.t < 20) {
       human.picX = 450;
       human.picY = 0;
-    } else if (human.t >= 6 && human.t < 11) {
+    } else if (human.t >= 20 && human.t < 30) {
       human.picX = 1350;
       human.picY = 0;
-    } else if (human.t >= 11) {
+    } else if (human.t >= 30) {
       human.picX = 450;
       human.picY = 0;
-      if (human.t > 12) human.t = 0;
+      if (human.t > 32) human.t = 0;
     }
   }
   if (human.direction === 1) {
     image(
       human_spriteR,
-      human.x,
-      human.y,
+      human.x - 4,
+      human.y - 4,
       35,
       80,
       human.picX,
@@ -48,8 +48,8 @@ function drawHuman(human) {
   } else {
     image(
       human_spriteL,
-      human.x,
-      human.y,
+      human.x - 4,
+      human.y - 4,
       35,
       80,
       human.picX,
@@ -75,7 +75,7 @@ function moveHuman(human) {
   }
   if (
     (human.x < human.dx && human.direction === 1) ||
-    (human.direction === -1 && human.x > 0)
+    (human.direction === -1 && human.x > 60)
   ) {
     let sp = human.speed * human.direction;
     human.x = human.x + sp;

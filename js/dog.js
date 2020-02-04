@@ -10,7 +10,7 @@ var dog = {
   picX: 0,
   picY: 0,
   t: 0,
-  live: 100,
+  life: 20,
   points: 0,
   x_velocity: 0,
   y_velocity: 0,
@@ -84,17 +84,17 @@ function drawPlayer() {
 
 function movePlayer() {
   if (keyIsDown(UP_ARROW) && dog.jumping === false) {
-    dog.y_velocity -= 25;
+    dog.y_velocity -= 35;
     dog.jumping = true;
   }
 
   if (keyIsDown(LEFT_ARROW)) {
-    dog.x_velocity -= 0.5;
+    dog.x_velocity -= 0.7;
     dog.walking = true;
     dog.direction = 0;
     dog.t++;
   } else if (keyIsDown(RIGHT_ARROW)) {
-    dog.x_velocity += 0.5;
+    dog.x_velocity += 0.7;
     dog.walking = true;
     dog.direction = 1;
     dog.t++;
@@ -107,7 +107,7 @@ function movePlayer() {
   } else {
     dog.peeing = false;
   }
-  dog.y_velocity += 1.5; // gravity
+  dog.y_velocity += 1.4; // gravity
   for (var i in page.shrubbery) {
     if (colision(dog, page.shrubbery[i])) {
       dog.x_velocity = 0;
@@ -131,8 +131,8 @@ function movePlayer() {
 
   dog.x += dog.x_velocity;
   dog.y += dog.y_velocity;
-  dog.x_velocity *= 0.9; // friction
-  dog.y_velocity *= 0.9; // friction
+  dog.x_velocity *= 0.8; // friction
+  dog.y_velocity *= 0.8; // friction
 
   // if dog is falling below floor line
   for (let i in page.holes) {

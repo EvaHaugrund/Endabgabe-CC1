@@ -7,8 +7,10 @@ let human_spriteL;
 let backgroundPNG;
 let groundPNG;
 let treePNG;
+let treeWithPeePNG;
 let shrubPNG;
-let liveBoxPNG;
+let lifeBoxPNG;
+let lifeBox2PNG;
 let doghousePNG;
 let holePNG;
 let rightArrow;
@@ -26,8 +28,10 @@ function preload() {
   backgroundPNG = loadImage("png/background.png");
   groundPNG = loadImage("png/ground.png");
   treePNG = loadImage("png/tree.png");
+  treeWithPeePNG = loadImage("png/TreeWithPee.png");
   shrubPNG = loadImage("png/shrub.png");
-  liveBoxPNG = loadImage("png/liveBox.png");
+  lifeBoxPNG = loadImage("png/lifeBox.png");
+  lifeBox2PNG = loadImage("png/lifeBox2.png");
   doghousePNG = loadImage("png/doghouse.png");
   holePNG = loadImage("png/hole.png");
   rightArrow = loadImage("png/Right-Arrow.png");
@@ -42,16 +46,10 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  let canvas = createCanvas(650, 600);
+  canvas.parent("jumpnrun");
   frameRate(30);
   //dog_sprite.loadPixels();
 }
 
-window.addEventListener("resize", function() {
-  resizeCanvas(windowWidth, windowHeight);
-  clear();
-});
-
 new p5();
-var width = windowWidth;
-var height = windowHeight;

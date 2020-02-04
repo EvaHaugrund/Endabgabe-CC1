@@ -6,12 +6,12 @@ let level = {
 let page = {};
 let pageNow = 0;
 
-function drawLive() {
+function drawLife() {
   fill(0, 0, 0);
   textSize(15);
-  text("Live:" + dog.live, 50, 50);
+  text("Life:" + dog.life, 50, 50);
 
-  if (dog.live <= 0) {
+  if (dog.life <= 0) {
     state = 2;
   }
 }
@@ -62,11 +62,16 @@ function gameWon() {
   text("Game Won", 270, 250);
   fill(100, 100, 100);
   rect(240, 260, 100, 50);
-  rect(360, 260, 100, 50);
   fill(0, 0, 0);
   textSize(15);
   text("back to Menu", 247, 290);
-  text("next level", 380, 290);
+  if (pageNow != 14) {
+    fill(100, 100, 100);
+    rect(360, 260, 100, 50);
+    fill(0, 0, 0);
+    textSize(15);
+    text("next level", 380, 290);
+  }
 }
 function drawLevelNr() {
   let number;
@@ -76,6 +81,11 @@ function drawLevelNr() {
     number = 2;
   } else if (pageNow >= 9) {
     number = 3;
+  }
+  if (state === 4) {
+    fill(0, 0, 0);
+  } else {
+    fill(250, 250, 250);
   }
   text("Level:" + number, 550, 50);
 }
@@ -98,12 +108,12 @@ function drawExplained1(explained1) {
   image(leftArrow, explained1.x + 80, explained1.y + 5, 15, 15, 0, 0, 50, 50);
   image(downArrow, explained1.x + 100, explained1.y + 21, 15, 15, 0, 0, 50, 50);
   text(
-    "the cube gives you 10 extra lives",
+    "the cube gives you 10 extra lifes",
     explained1.x - 70,
     explained1.y + 120
   );
   text(
-    "if you pee angainst a tree you get a point",
+    "if you pee against a tree you get a point",
     explained1.x + 70,
     explained1.y + 150
   );
@@ -122,12 +132,12 @@ function drawExplained2(explained2) {
   fill(0, 0, 0);
   textSize(12);
   text(
-    "if you toutch the cat your live is going down",
+    "if you touch the cat your life is going down",
     explained2.x,
     explained2.y
   );
   text(
-    "don't toutch the human he will catch you",
+    "don't touch the human he will catch you",
     explained2.x + 300,
     explained2.y
   );
@@ -167,9 +177,9 @@ function mousePressed() {
           level.page[j].trees[i].hit = false;
         }
       }
-      for (let i in level.page[j].liveBox) {
-        if (level.page[j].liveBox[i].hit === true) {
-          level.page[j].liveBox[i].hit = false;
+      for (let i in level.page[j].lifeBox) {
+        if (level.page[j].lifeBox[i].hit === true) {
+          level.page[j].lifeBox[i].hit = false;
         }
       }
     }
@@ -238,9 +248,10 @@ function mousePressed() {
     mouseY < 310
   ) {
     state = 0;
-    dog.live = 100;
+    dog.life = 20;
     dog.points = 0;
     dog.x = 0;
+    dog.y = 465;
     if (pageNow <= 2) {
       pageNow = 0;
       switchPage(pageNow);
@@ -261,7 +272,7 @@ function mousePressed() {
     mouseY < 310
   ) {
     state = 4;
-    dog.live = 100;
+    dog.life = 20;
     dog.x = 0;
     dog.fall = false;
     for (let j in level.page) {
@@ -270,9 +281,9 @@ function mousePressed() {
           level.page[j].trees[i].hit = false;
         }
       }
-      for (let i in level.page[j].liveBox) {
-        if (level.page[j].liveBox[i].hit === true) {
-          level.page[j].liveBox[i].hit = false;
+      for (let i in level.page[j].lifeBox) {
+        if (level.page[j].lifeBox[i].hit === true) {
+          level.page[j].lifeBox[i].hit = false;
         }
       }
     }
@@ -306,10 +317,18 @@ function mousePressed() {
     mouseY < 310
   ) {
     state = 0;
-    dog.live = 100;
+    dog.life = 20;
     dog.points = 0;
-    pageNow += 1;
-    switchPage(pageNow);
+    if (pageNow <= 2) {
+      pageNow = 0;
+      switchPage(pageNow);
+    } else if (pageNow >= 3 && pageNow <= 8) {
+      pageNow = 3;
+      switchPage(pageNow);
+    } else if (pageNow >= 9 && pageNow <= 14) {
+      pageNow = 9;
+      switchPage(pageNow);
+    }
   }
   //next level
   if (
@@ -317,7 +336,8 @@ function mousePressed() {
     mouseX > 360 &&
     mouseX < 460 &&
     mouseY > 260 &&
-    mouseY < 310
+    mouseY < 310 &&
+    pageNow != 14
   ) {
     state = 4;
     dog.x = 0;

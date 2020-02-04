@@ -1,5 +1,22 @@
 body {
+  height: 100%;
+  width: 100%;
+  background-image: url(Background.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+
   padding: 0;
   margin: 0;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
+#jumpnrun {
+  margin-top: 55px;
+}
+/* .head {
+  text-align: center;
+  color: #ffffff;
+  font-size: 20px;
+} */

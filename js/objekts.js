@@ -11,7 +11,11 @@ function spawnTree(cx, cy) {
 }
 function drawTree(tree) {
   //rect(tree.x, tree.y, tree.sx, tree.sy);
-  image(treePNG, tree.x - 15, tree.y - 8, 220, 300, 20, 90, 800, 800);
+  if (tree.hit === true) {
+    image(treeWithPeePNG, tree.x - 15, tree.y - 8, 220, 300, 20, 90, 800, 800);
+  } else {
+    image(treePNG, tree.x - 15, tree.y - 8, 220, 300, 20, 90, 800, 800);
+  }
 }
 //Scrubbery
 function spawnShrub(cx, cy) {
@@ -41,8 +45,8 @@ function drawHole(hole) {
   rect(hole.x, hole.y, hole.sx, hole.sy);
   image(holePNG, hole.x, hole.y, hole.sx, hole.sy, 0, 0, 800, 800);
 }
-//live Box
-function spawnLiveBox(cx, cy) {
+//life Box
+function spawnLifeBox(cx, cy) {
   let box = {
     x: cx,
     y: cy,
@@ -52,9 +56,13 @@ function spawnLiveBox(cx, cy) {
   };
   return box;
 }
-function drawLiveBox(box) {
+function drawLifeBox(box) {
   //rect(box.x, box.y, box.sx, box.sy);
-  image(liveBoxPNG, box.x, box.y, 21, 21, 0, 0, 21, 21);
+  if (box.hit === false) {
+    image(lifeBoxPNG, box.x, box.y, 21, 21, 0, 0, 21, 21);
+  } else {
+    image(lifeBox2PNG, box.x, box.y, 21, 21, 0, 0, 21, 21);
+  }
 }
 
 //doghouse

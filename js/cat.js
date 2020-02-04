@@ -10,7 +10,7 @@ function spawnCat(cx, cy, sp) {
     direction: 1,
     sx: 30,
     sy: 28,
-    dx: 400,
+    dx: 600,
     t: 0,
     walking: false,
     attacking: false
@@ -19,7 +19,15 @@ function spawnCat(cx, cy, sp) {
 }
 function drawCat(cat) {
   // rect(cat.x, cat.y, cat.sx, cat.sy);
-  if (cat.walking === true) {
+  if (cat.attacking === true) {
+    cat.picX = 30;
+    cat.picY = 800;
+    if (cat.t > 7) {
+      cat.picX = 810;
+      cat.picY = 0;
+      cat.t = 0;
+    }
+  } else if (cat.walking === true) {
     cat.picX = 0;
     cat.picY = 0;
     if (cat.t > 7) {
@@ -70,7 +78,7 @@ function moveCat(cat) {
   }
   if (
     (cat.x < cat.dx && cat.direction === 1) ||
-    (cat.direction === -1 && cat.x > 0)
+    (cat.direction === -1 && cat.x > 40)
   ) {
     let sp = cat.speed * cat.direction;
     cat.x = cat.x + sp;
