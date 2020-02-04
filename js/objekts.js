@@ -1,6 +1,6 @@
 //Trees
 function spawnTree(cx, cy) {
-  var tree = {
+  let tree = {
     x: cx,
     y: cy,
     sx: 60,
@@ -19,7 +19,7 @@ function drawTree(tree) {
 }
 //Scrubbery
 function spawnShrub(cx, cy) {
-  var shrub = {
+  let shrub = {
     x: cx,
     y: cy,
     sx: 48,
@@ -33,7 +33,7 @@ function drawShrub(shrub) {
 }
 //hole
 function spawnHole(cx, cy) {
-  var hole = {
+  let hole = {
     x: cx,
     y: cy,
     sx: 70,

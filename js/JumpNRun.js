@@ -1,5 +1,5 @@
 function setup() {
-  var canvas = createCanvas(650, 600);
+  let canvas = createCanvas(650, 600);
   canvas.parent("jumpnrun");
 }
 window.addEventListener(
@@ -12,9 +12,10 @@ window.addEventListener(
   },
   false
 );
+
 //colision
 function hit() {
-  for (var i in page.cats) {
+  for (let i in page.cats) {
     if (colision(dog, page.cats[i]) === true) {
       dog.life -= 1;
       page.cats[i].attacking = true;
@@ -22,31 +23,31 @@ function hit() {
       page.cats[i].attacking = false;
     }
   }
-  for (var b in page.lifeBox) {
+  for (let i in page.lifeBox) {
     if (
-      colision(page.lifeBox[b], dog) === true &&
-      page.lifeBox[b].hit === false
+      colision(page.lifeBox[i], dog) === true &&
+      page.lifeBox[i].hit === false
     ) {
       dog.life += 10;
-      page.lifeBox[b].hit = true;
+      page.lifeBox[i].hit = true;
     }
   }
 
-  for (var j in page.humans) {
-    if (colision(dog, page.humans[j]) === true) {
+  for (let i in page.humans) {
+    if (colision(dog, page.humans[i]) === true) {
       state = 2;
     }
   }
 
-  for (var t in page.trees) {
+  for (let i in page.trees) {
     if (
-      colision(dog, page.trees[t]) === true &&
+      colision(dog, page.trees[i]) === true &&
       dog.peeing === true &&
-      page.trees[t].hit === false
+      page.trees[i].hit === false
     ) {
       dog.points += 1;
       dog.peeing = false;
-      page.trees[t].hit = true;
+      page.trees[i].hit = true;
     }
   }
   for (let i in page.doghouse) {
@@ -96,6 +97,7 @@ function createPage(id) {
     explanation3: []
   };
   switch (id) {
+    //level 1
     case 0:
       page.lifeBox.push(spawnLifeBox(100, 350));
       page.trees.push(spawnTree(230, 375));

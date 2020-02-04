@@ -2,7 +2,7 @@
 // https://github.com/frankarendpoth/frankarendpoth.github.io/blob/master/content/pop-vlog/javascript/2017/009-control/control.js
 
 //Player
-var dog = {
+let dog = {
   x: 0,
   y: 465,
   sx: 37,
@@ -108,7 +108,7 @@ function movePlayer() {
     dog.peeing = false;
   }
   dog.y_velocity += 1.4; // gravity
-  for (var i in page.shrubbery) {
+  for (let i in page.shrubbery) {
     if (colision(dog, page.shrubbery[i])) {
       dog.x_velocity = 0;
       if (dog.x < page.shrubbery[i].x) {

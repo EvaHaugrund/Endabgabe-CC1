@@ -1,6 +1,6 @@
 //Humans
 function spawnHuman(cx, cy, sp) {
-  var human = {
+  let human = {
     startX: cx,
     x: cx,
     y: cy,
