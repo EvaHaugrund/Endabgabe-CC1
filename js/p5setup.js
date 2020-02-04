@@ -27,7 +27,7 @@ function preload() {
   human_spriteL = loadImage("png/human-spritesheetL.png");
   backgroundPNG = loadImage("png/background.png");
   groundPNG = loadImage("png/ground.png");
-  treePNG = loadImage("png/tree.png");
+  treePNG = loadImage("png/Tree.png");
   treeWithPeePNG = loadImage("png/TreeWithPee.png");
   shrubPNG = loadImage("png/shrub.png");
   lifeBoxPNG = loadImage("png/lifeBox.png");
